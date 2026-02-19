@@ -1,0 +1,11 @@
+import pandas as pd
+import numpy as np
+df = pd.read_csv("data/day22_interactions.csv")
+df["x1_x2"] = df["x1"] * df["x2"]
+df["x1_plus_x2"] = df["x1"] + df["x2"]
+df["x1_minus_x2"] = df["x1"] - df["x2"]
+df["high_flag"] = ((df["x1"] > df["x1"].median()) & 
+                   (df["x2"] > df["x2"].median())).astype(int)
+corr = df.corr(numeric_only=True)
+print("Correlation with target:")
+print(corr["target"].sort_values(ascending=False))
