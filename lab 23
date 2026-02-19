@@ -1,0 +1,16 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+df = pd.read_csv("data/day23_poly.csv")
+X = df[["x"]]
+y = df["y"]
+degrees = [1, 2, 5]
+for d in degrees:
+    poly = PolynomialFeatures(degree=d, include_bias=False)
+    X_poly = poly.fit_transform(X)
+    model = LinearRegression()
+    model.fit(X_poly, y)
+    r2 = r2_score(y, model.predict(X_poly))
+    print(f"Degree {d} → R²: {r2:.4f}")
