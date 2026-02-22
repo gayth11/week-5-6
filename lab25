@@ -1,0 +1,23 @@
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.feature_selection import VarianceThreshold
+df = pd.read_csv("data/day25_project.csv")
+df_feat = df.copy()
+if {"price", "sqft"}.issubset(df.columns):
+    df_feat["price_per_sqft"] = (
+        df["price"] / df["sqft"].replace(0, np.nan)
+    ).fillna(df["price"].median())
+if {"price", "sqft"}.issubset(df.columns):
+    df_feat["price_x_sqft"] = df_feat["price"] * df_feat["sqft"]
+if "price_per_sqft" in df_feat.columns:
+    poly = PolynomialFeatures(degree=2, include_bias=False)
+    poly_vals = poly.fit_transform(df_feat[["price_per_sqft"]])
+    poly_cols = poly.get_feature_names_out(["price_per_sqft"])
+    df_feat[poly_cols] = poly_vals
+selector = VarianceThreshold(threshold=0.0)
+numeric_df = df_feat.select_dtypes(include=["number"])
+selected = selector.fit_transform(numeric_df)
+selected_cols = numeric_df.columns[selector.get_support()]
+df_final = pd.DataFrame(selected, columns=selected_cols)
+df_final.to_csv("data/day25_engineered.csv", index=False)
