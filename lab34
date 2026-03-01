@@ -1,0 +1,21 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+df = pd.read_csv("data/day34_patterns.csv")
+num_cols = df.select_dtypes(include="number").columns
+cat_cols = df.select_dtypes(include="object").columns
+sns.relplot(
+    data=df,
+    x=num_cols[0],
+    y=num_cols[1],
+    col=cat_cols[0],
+    kind="scatter"
+)
+sns.lmplot(
+    data=df,
+    x=num_cols[0],
+    y=num_cols[1],
+    hue=cat_cols[0]
+)
+plt.show()
+print("قد يظهر اختلاف في العلاقة بين المتغيرات حسب الفئة.")
