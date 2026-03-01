@@ -1,0 +1,23 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+df = pd.read_csv("data/day32_relationships.csv")
+num_cols = df.select_dtypes(include="number").columns
+cat_cols = df.select_dtypes(include="object").columns
+sns.scatterplot(
+    data=df,
+    x=num_cols[0],
+    y=num_cols[1],
+    hue=cat_cols[0],
+    style=cat_cols[0]
+)
+plt.title("Scatterplot with Encoding")
+plt.show()
+sns.relplot(
+    data=df,
+    x=num_cols[0],
+    y=num_cols[1],
+    hue=cat_cols[0],
+    col=cat_cols[0]
+)
+plt.show()
