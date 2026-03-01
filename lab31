@@ -1,0 +1,19 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+df = pd.read_csv("data/day31_seaborn.csv")
+num_col = df.select_dtypes(include="number").columns[0]
+cat_col = df.select_dtypes(include="object").columns[0]
+sns.histplot(df[num_col], kde=True)
+plt.title("Histogram")
+plt.show()
+sns.kdeplot(df[num_col], fill=True)
+plt.title("KDE Plot")
+plt.show()
+sns.boxplot(x=df[num_col])
+plt.title("Boxplot")
+plt.show()
+sns.countplot(x=df[cat_col])
+plt.title("Countplot")
+plt.xticks(rotation=45)
+plt.show()
